@@ -16,6 +16,20 @@
     <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
     <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
     <script src="https://use.fontawesome.com/baacfa72b9.js"></script>
+    <script>
+    function validateform(){
+    var name=document.from.name.value;
+    var password=document.form.password.value;
+
+    if (name==null || name=="") && (name.length<5){
+      alert("Name can't be blank");
+      return false;
+    }else if(password.length<6){
+      alert("Password must be at least 6 characters long.");
+      return false;
+      }
+     }
+</script>
     <style>
         .phone{
         height:105%;
@@ -141,4 +155,5 @@
 <script src="https://code.jquery.com/jquery-2.1.4.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 </body>
+</html>
 </html>
