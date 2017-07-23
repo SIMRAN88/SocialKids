@@ -34,7 +34,7 @@ def signup_view(request):
             user = User(name=name, password=make_password(password), email=email, username=username)
             user.save()
             sg = sendgrid.SendGridAPIClient(apikey=os.environ.get(API_KEY))
-            from_email = Email("socialkids2017@gmail.com.com")
+            from_email = Email("socialkids2017@gmail.com")
             to_email = Email(user.email)
             subject = "Welcome to social kids"
             content = Content("text/plain", "You have successfully signed up.Explore the social network")
