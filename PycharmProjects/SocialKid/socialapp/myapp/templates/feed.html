@@ -102,6 +102,7 @@
         <div>
             {% for comment in post.comments %}
                 <p><b>{{ comment.user.username }} [{{ comment.created_on }}]:</b> {{ comment.comment_text }}</p>
+
             {% endfor %}
         </div>
             
