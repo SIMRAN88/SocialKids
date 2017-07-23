@@ -1,0 +1,112 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Feed</title>
+    {% load static %} <link rel="shortcut icon" href="{% static "myapp/socialkid.png" %}" type="image/x-icon">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Shrikhand" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <script src="https://use.fontawesome.com/baacfa72b9.js"></script>
+    <style>
+        #cta{
+        background-color:#133e99;
+        }
+        .text{
+        color:#ccd3e2;
+        font-family: 'Shrikhand', cursive;
+        }
+        .sim{
+        background-color:#ccd3e2;
+        }
+        .white{
+        background-color:white;
+        }
+
+        .new{
+        border:solid 1px #dae2ef;
+        margin:0px 400px 70px 400px;
+        border:solid 2px white;
+        background-color:white;
+        }
+        .text1{
+        font-family: 'Lobster', cursive;
+        color:#bc32b3;
+        font-size:30px;
+        }
+        .shift{
+        margin-top:4px;
+        }
+        .text2{
+        color:white;
+        font-size:30px;
+        }
+
+    </style>
+</head>
+<body class="sim">
+<nav class="navbar fixed-top navbar-light bg-faded text1" id="cta">
+    <div class="container">
+  <a class="text2 navbar-brand" href="#"><i class="fa fa-user aria-hidden="true"></i> Social Kids</a>
+
+                <form method="post" action="/post/">
+        {% csrf_token %}
+        <button class="btn btn-primary">New Post</button>
+    </form>
+
+    </div>
+</nav>
+
+<div class="sim" align="center">
+
+
+    {% for post in posts %}
+    <div class="new">
+
+    <br>
+        <h3 class="text1"> {{ post.user.username }} </h3>
+        <p>[{{ post.created_on }}]</p>
+        <img style="display:inline-block; width:350px; height:300px;"
+             src="{{ post.image_url }}" /><br>
+        <span  style="display:inline-block;" class="text1">{{ post.user.username }} : {{ post.caption }}</span><br/><br/>
+        <div style="display:inline-block">
+            {{ post.like_count }} likes this
+        </div>
+        <div style="display:inline-block">
+            <form method="POST" action="/like/">
+              {% csrf_token %}
+              <input type="hidden" name="post" value="{{ post.id }}" />
+                {% if post.has_liked %}
+                <button class="btn btn-primary" class="shift">Unlike <i class="fa fa-thumbs-down aria-hidden="true"></i></button>
+                {% else %}
+                <button class="btn btn-primary"><i class="fa fa-thumbs-up" aria-hidden="true"></i></button>
+                {% endif %}
+            </form></i>
+        </div>
+
+
+        <div>
+            <form method="POST" action="/comment/">
+                {% csrf_token %}
+                <input type="hidden" name="post" value="{{ post.id }}" class="text"/>
+                <input type="text" name="comment_text" id="comment_text" placeholder="Make a comment.." value="{{ comment_text }}">
+                {{ comment_text }}
+                <button class="btn btn-primary">Comment</button>
+            </form>
+        </div>
+
+        <div>
+            {% for comment in post.comments %}
+                <p><b>{{ comment.user.username }} [{{ comment.created_on }}]:</b> {{ comment.comment_text }}</p>
+            {% endfor %}
+        </div>
+            
+    </div>
+    {% endfor %}
+</div>
+</body>
+</html>

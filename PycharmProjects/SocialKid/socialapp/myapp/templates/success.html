@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Social Kids</title>
+     <!-- Favicons
+    ================================================== -->
+    {% load static %} <link rel="shortcut icon" href="{% static "myapp/socialkid.png" %}" type="image/x-icon">
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Shrikhand" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
+    <style>
+        .phone{
+        height:105%;
+        width:105%;
+        margin-top:30px;
+        }
+        .text{
+        font-family: 'Shrikhand', cursive;
+        color:#436ea5;
+        }
+         #me {
+            -webkit-animation: rotation 15s infinite linear;
+        }
+
+        @-webkit-keyframes rotation {
+            from {-webkit-transform: rotate(0deg);}
+            to   {-webkit-transform: rotate(359deg);}
+        }
+       </style>
+     <div class = "row">
+            <div class ="col-md-1">
+            </div>
+            <div class ="col-md-4">
+
+            {% load static %} <img src="{% static "myapp/global-kids.png" %}" id="me" alt="Image!" class="phone"/>
+            </div>
+            <div class="col-md-1">
+            </div>
+            <div class ="col-md-4">
+             <br>
+                <form class="form-horizontal" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+<br>
+                    <br>
+                    <br>
+                    <h1 class="text">Successfully signed up! Please continue to login!</h1>
+    <form action="/login/" method="get">
+        <input type="submit" class="btn btn-default" value="Login">
+    </form>
+    </div>
+</body>
+</html>

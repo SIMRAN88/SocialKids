@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Post</title>
+    {% load static %} <link rel="shortcut icon" href="{% static "myapp/socialkid.png" %}" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css?family=Shrikhand" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <style>
+    .phone{
+        height:20%;
+        width:20%;
+        margin-top:5px;
+        }
+        .sim{
+        background-color:#ff4423;
+        }
+        .text{
+        font-family: 'Shrikhand', cursive;
+        color:#436ea5;
+        }
+         #me {
+            -webkit-animation: rotation 15s infinite linear;
+        }
+
+        @-webkit-keyframes rotation {
+            from {-webkit-transform: rotate(0deg);}
+            to   {-webkit-transform: rotate(359deg);}
+        }
+    </style>
+</head>
+<body>
+<h1 class="text" align="center">Post an image</h1>
+<div align="center">
+    <form method="POST" action="" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+        <input type="submit" class="btn btn-danger" value="Post">
+    </form>
+    <br>
+    <br>
+    {% load static %} <img src="{% static "myapp/global-kids.png" %}" id="me" alt="Image!" class="phone"/>
+</div>
+</body>
+</html>
