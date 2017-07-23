@@ -12,7 +12,10 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Shrikhand" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Chewy" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <script src="https://use.fontawesome.com/baacfa72b9.js"></script>
     <style>
         .phone{
         height:105%;
@@ -20,8 +23,16 @@
         margin-top:30px;
         }
         .text{
-        font-family: 'Shrikhand', cursive;
+        font-family: 'Chewy', cursive;
         color:#436ea5;
+        }
+        .text5{
+        font-family:'Lobster','cursive;
+        color:#436ea5;
+        }
+        .text3{
+        font-family:'Chewy' ,cursive;
+        color:#573f7a;
         }
         .text1{
         font-family: 'Lobster', cursive;
@@ -29,11 +40,21 @@
         }
         .text2{
         font-family: 'Lobster', cursive;
-        color:#1a2130;
+        color:white;
+        font-size:45px;
+        margin-top:10px;
+        height:30%;
         }
-        #cta{
-        background-color:#7dbbce;
-        padding:0.2% 0;
+       #cta{
+        background-color:#bc32b3;
+        margin:1px 0 0 0;
+
+        }
+        .text4{
+        font-family:'Lobster',cursive;
+        margin-top:40px;
+        height:30%;
+        color:white;
         }
 
         #me {
@@ -44,29 +65,31 @@
             from {-webkit-transform: rotate(0deg);}
             to   {-webkit-transform: rotate(359deg);}
         }
+        .sim{
+        background-color:#e2cee2;
+        }
 
     </style>
 </head>
-<body>
-    <nav class="navbar">
-      <nav class="container">
-           <div class="navbar-header">
-               <ul class="nav navbar-nav navbar-left">
-                <li><h2 class="text">SocialKids</h2> </li>
-               </ul>
-           </div>
-              <ul class="nav navbar-nav navbar-right">
-                <li><h3 class="text1">For the child who communicates</h3> </li>
-              </ul>
-      </nav>
-    </nav>
-    <div id="cta">
+<body class="sim">
+   <nav class="navbar fixed-top navbar-light" id="cta">
+    <div class="container">
+  <a class="text2 navbar-brand" href="#"><i class="fa fa-users aria-hidden="true"></i>  Social Kids</a>
+         <ul class="nav navbar-nav navbar-right">
+             <li><h2 class="text4">For the child who communicates</h2></li>
+         </ul>
+
+    </div>
+</nav>
+
         <div class = "row">
             <div class ="col-md-1">
             </div>
             <div class ="col-md-4">
 
             {% load static %} <img src="{% static "myapp/global-kids.png" %}" id="me" alt="Image!" class="phone"/>
+                <br>
+                <h3 class="text1">SocialKids © 2017 </h3>
             </div>
             <div class="col-md-1">
             </div>
@@ -75,7 +98,7 @@
                 <form class="form-horizontal" method="POST">
                 {% csrf_token %}
                 <div class="form-group">
-                <h2 class="text2" align="center">Create an account</h2>
+                <h2 class="text1" align="center">Create an account</h2>
               <br>
             <label for="username" class="col-sm-2 control-label">Username</label>
             <div class="col-sm-10">
@@ -102,16 +125,19 @@
           </div>
           <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-              <button type="submit" class="btn btn-default" name="Sign up">Sign up</button>
+              <button type="submit" class="btn btn-primary" name="Sign up">Sign up</button>
             </div>
-          </div><br>
-                <div><h3 class="text2" align="center">Already a user?<br><a href="login/" class="text1">Login</a></h3> </div>
+          </div>
+                <div><h2 class="text1" align="center">Already a user?<br><a href="login/" class="text5">Login</a></h2> </div>
+                    <br><h2 class="text3" align="center"><i class="fa fa-flag-checkered fa-x" aria-hidden="true"></i>
+                    "Zero harm to the brains and bones."</h2>
+                    <h3 class="text1" align="center">Enter at nobody's risk because it is the safest.</h3>
             </form>
             </div>
             <div class="col-md-2">
             </div>
         </div>
-     </div>
+
 <script src="https://code.jquery.com/jquery-2.1.4.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 </body>

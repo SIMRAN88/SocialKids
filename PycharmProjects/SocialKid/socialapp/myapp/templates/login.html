@@ -9,6 +9,8 @@
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Shrikhand" rel="stylesheet">
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <script src="https://use.fontawesome.com/baacfa72b9.js"></script>
     <style>
         .phone{
         height:105%;
@@ -18,6 +20,30 @@
          .text{
         font-family: 'Shrikhand', cursive;
         color:#436ea5;
+        }
+        .text1{
+        font-family: 'Lobster', cursive;
+        color:#bc32b3;
+        }
+         #cta{
+        background-color:#bc32b3;
+        margin:1px 0 0 0;
+}
+        .text4{
+        font-family:'Lobster',cursive;
+        margin-top:40px;
+        height:30%;
+        color:white;
+        }
+         .text2{
+        font-family: 'Lobster', cursive;
+        color:white;
+        font-size:45px;
+        margin-top:10px;
+        height:30%;
+        }
+         .sim{
+        background-color:#e2cee2;
         }
          #me {
             -webkit-animation: rotation 15s infinite linear;
@@ -30,15 +56,25 @@
 
     </style>
 </head>
-<body>
+<body class="sim">
+<nav class="navbar fixed-top navbar-light" id="cta">
+    <div class="container">
+  <a class="text2 navbar-brand" href="#"><i class="fa fa-users aria-hidden="true"></i>  Social Kids</a>
+         <ul class="nav navbar-nav navbar-right">
+             <li><h2 class="text4">For the child who communicates</h2></li>
+         </ul>
+
+    </div>
+</nav>
    <div class="cta">
     <div class = "row">
         <div class ="col-md-1">
         </div>
         <div class ="col-md-4">
             <br>
-            <br>
             {% load static %} <img src="{% static "myapp/global-kids.png" %}" id="me" alt="Image" class="phone"/>
+            <br>
+                <h3 class="text1">SocialKids © 2017 </h3>
         </div>
         <div class="col-md-1">
 
@@ -48,7 +84,7 @@
         <form class="form-horizontal" method="POST">
             {% csrf_token %}
             <div class="form-group">
-              <h1 class ="text" align="center">SocialKid</h1>
+              <h1 class ="text" align="center"></h1>
 
               <br>
             <label for="username" class="col-sm-2 control-label">Username</label>
@@ -62,7 +98,7 @@
               <input type="password" class="form-control" placeholder="password" id="password" name="password" value={{ password }}>
             </div>
           </div>
-            <input type="submit" class="btn btn-default" value="Login" align="center">
+            <input type="submit" class="btn btn-primary" value="Login" align="center">
         </form>
 
     <div>

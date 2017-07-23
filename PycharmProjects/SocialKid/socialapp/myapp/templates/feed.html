@@ -10,26 +10,55 @@
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Shrikhand" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Chewy" rel="stylesheet">
     <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
     <script src="https://use.fontawesome.com/baacfa72b9.js"></script>
     <style>
-        #cta{
-        background-color:#133e99;
-        }
+
         .text{
-        color:#ccd3e2;
+        color:#f4427a;
         font-family: 'Shrikhand', cursive;
+        font-size:17px;
         }
-        .sim{
-        background-color:#ccd3e2;
+        .text2{
+        font-family: 'Lobster', cursive;
+        color:white;
+        font-size:45px;
+        margin-top:10px;
+        height:30%;
         }
-        .white{
-        background-color:white;
+        .text11{
+        font-family: 'Lobster', cursive;
+        color:#573f7a;
+        font-size:45px;
+        margin-top:10px;
+        height:30%;
         }
+        .text22{
+        font-family: 'Lobster', cursive;
+        color:#573f7a;
+        }
+
+        .text3{
+        font-family:'Chewy' ,cursive;
+        color:#282b16;
+        }
+       #cta{
+        background-color:#bc32b3;
+        margin:1px 0 0 0;
+
+        }
+        .text4{
+        font-family:'Lobster',cursive;
+        margin-top:40px;
+        height:30%;
+        color:white;
+        }
+
 
         .new{
         border:solid 1px #dae2ef;
-        margin:0px 400px 70px 400px;
+        margin:9px 500px 70px 500px;
         border:solid 2px white;
         background-color:white;
         }
@@ -41,25 +70,34 @@
         .shift{
         margin-top:4px;
         }
-        .text2{
-        color:white;
-        font-size:30px;
+
+         .sim{
+        background-color:#e2cee2;
         }
+        .text5{
+        font-family:'Lobster','cursive;
+        color:#436ea5;
+        }
+        post{
+        margin:0 4px 4px 0;
+        background:cover;
+        }
+
+
 
     </style>
 </head>
 <body class="sim">
-<nav class="navbar fixed-top navbar-light bg-faded text1" id="cta">
+   <nav class="navbar fixed-top navbar-light" id="cta">
     <div class="container">
-  <a class="text2 navbar-brand" href="#"><i class="fa fa-user aria-hidden="true"></i> Social Kids</a>
-
-                <form method="post" action="/post/">
-        {% csrf_token %}
-        <button class="btn btn-primary">New Post</button>
-    </form>
+  <a class="text2 navbar-brand" href="#"><i class="fa fa-users aria-hidden="true"></i>  Social Kids</a>
+         <ul class="nav navbar-nav navbar-right">
+             <li><h2 class="text4">For the child who communicates</h2></li>
+         </ul>
 
     </div>
 </nav>
+
 
 <div class="sim" align="center">
 
@@ -68,28 +106,25 @@
     <div class="new">
 
     <br>
-        <h3 class="text1"> {{ post.user.username }} </h3>
-        <p>[{{ post.created_on }}]</p>
-        <img style="display:inline-block; width:350px; height:300px;"
+        <h3 class="text11"> {{ post.user.username }} </h3>
+        <p class="text">[{{ post.created_on }}]</p>
+        <img class="post" style="display:inline-block; width:496px; height:344px;"
              src="{{ post.image_url }}" /><br>
-        <span  style="display:inline-block;" class="text1">{{ post.user.username }} : {{ post.caption }}</span><br/><br/>
-        <div style="display:inline-block">
+        <span class="text post" style="display:inline-block;" >{{ post.caption }}</span><br/><br/>
+        <div  align="left">
             {{ post.like_count }} likes this
         </div>
-        <div style="display:inline-block">
+        <div  align="left">
             <form method="POST" action="/like/">
               {% csrf_token %}
               <input type="hidden" name="post" value="{{ post.id }}" />
                 {% if post.has_liked %}
                 <button class="btn btn-primary" class="shift">Unlike <i class="fa fa-thumbs-down aria-hidden="true"></i></button>
                 {% else %}
-                <button class="btn btn-primary"><i class="fa fa-thumbs-up" aria-hidden="true"></i></button>
+                <button class="btn btn-primary">Like <i class="fa fa-thumbs-up" aria-hidden="true"></i></button>
                 {% endif %}
             </form></i>
-        </div>
-
-
-        <div>
+            <span>
             <form method="POST" action="/comment/">
                 {% csrf_token %}
                 <input type="hidden" name="post" value="{{ post.id }}" class="text"/>
@@ -97,11 +132,17 @@
                 {{ comment_text }}
                 <button class="btn btn-primary">Comment</button>
             </form>
+            </span>
         </div>
 
-        <div>
+        <div class="comment" align="left">
             {% for comment in post.comments %}
-                <p><b>{{ comment.user.username }} [{{ comment.created_on }}]:</b> {{ comment.comment_text }}</p>
+            <p> <div class="text22">
+              {{ comment.user.username }}: <span class="text"> {{ comment.comment_text }}</span>
+          </div>
+            <span class="text3">[{{ comment.created_on }}]</span>
+
+        </p>
 
             {% endfor %}
         </div>

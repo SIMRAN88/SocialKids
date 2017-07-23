@@ -1,13 +1,38 @@
-import os
 from django.contrib.auth.hashers import make_password, check_password
 from django.shortcuts import render, redirect
 from forms import SignUpForm, LoginForm, PostForm, LikeForm, CommentForm
 from models import User, SessionToken, PostModel, LikeModel, CommentModel
 from datetime import timedelta
 from django.utils import timezone
+import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 from imgurpython import ImgurClient
+
+# for sending mail to user
+import sendgrid
+sendgrid_key = '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'
+my_client = sendgrid.SendGridAPIClient(apikey=sendgrid_key)
+
+def create_payload(subject,message,email):
+    from_email = "socialkids2017@gmail.com"
+    from_name = "Social Kids"
+
+    data = {
+            "personalizations":[{
+                "to":[{"email":email }],
+                "subject": subject
+            }],
+            "from": {
+                "email": from_email,
+                "name": from_name
+            },
+            "content": [{
+                "type":"text/html",
+                "value": message
+            }]
+        }
+    return data
 
 # Create your views here.
 def signup_view(request):
@@ -18,11 +43,24 @@ def signup_view(request):
             name = form.cleaned_data['name']
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
+            user_len = len(username)
+            password_len = len(password)
+            if user_len > 4 and password_len > 5:
+                print "User name should be at least three characters long and password length more than 5"
             # saving data to DB
-            user = User(name=name, password=make_password(password), email=email, username=username)
-            user.save()
-            return render(request, 'success.html')
-            # return redirect('login/')
+            else:
+                user = User(name=name, password=make_password(password), email=email, username=username)
+                user.save()
+
+                subject = "Successfully Signed Up"
+                message = "Welcome to Social Kids"
+                payload = create_payload(subject, message, email)
+                response = my_client.client.mail.send.post(request_body=payload)
+                print response
+
+                return render(request, 'success.html')
+
+                # return redirect('login/')
     else:
         form = SignUpForm()
 
@@ -36,7 +74,7 @@ def login_view(request):
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
-            #SQL QUERY
+            # SQL QUERY
             user = User.objects.filter(username=username).first()
             if user:
                 # Check for the password
@@ -88,9 +126,7 @@ def post_view(request):
 def feed_view(request):
     user = check_validation(request)
     if user:
-
-        posts = PostModel.objects.all().order_by('created_on')
-
+        posts = PostModel.objects.all().order_by('-created_on')
         for post in posts:
             existing_like = LikeModel.objects.filter(post_id=post.id, user=user).first()
             if existing_like:
@@ -107,12 +143,25 @@ def like_view(request):
     if user and request.method == 'POST':
         form = LikeForm(request.POST)
         if form.is_valid():
+            post = form.cleaned_data.get('post')
             post_id = form.cleaned_data.get('post').id
             existing_like = LikeModel.objects.filter(post_id=post_id, user=user).first()
             if not existing_like:
                 LikeModel.objects.create(post_id=post_id, user=user)
+                LikeModel.objects.create(post_id=post_id, user=user)
+                print "Post is liked"
+                sg = sendgrid.SendGridAPIClient(apikey=API_KEY)
+                from_email = email("socialkids2017.com")
+                to_email = email(post.user.email)
+                subject = "InstaClone"
+                content = Content("text/plain", "Your post is liked")
+                mail = Mail(from_email, subject, to_email, content)
+                response = sg.client.mail.send.post(request_body=mail.get())
+                print response
+                print post.user.email
             else:
                 existing_like.delete()
+
             return redirect('/feed/')
     else:
         return redirect('/login/')

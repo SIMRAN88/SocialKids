@@ -7,6 +7,10 @@
     <link href="https://fonts.googleapis.com/css?family=Shrikhand" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Chewy" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <script src="https://use.fontawesome.com/baacfa72b9.js"></script>
 
     <style>
     .phone{
@@ -21,6 +25,27 @@
         font-family: 'Shrikhand', cursive;
         color:#436ea5;
         }
+         .text2{
+        font-family: 'Lobster', cursive;
+        color:white;
+        font-size:45px;
+        margin-top:10px;
+        height:30%;
+        }
+       #cta{
+        background-color:#bc32b3;
+        margin:1px 0 0 0;
+
+        }
+        .text4{
+        font-family:'Lobster',cursive;
+        margin-top:40px;
+        height:30%;
+        color:white;
+        }
+         .sim{
+        background-color:#e2cee2;
+        }
          #me {
             -webkit-animation: rotation 15s infinite linear;
         }
@@ -31,7 +56,16 @@
         }
     </style>
 </head>
-<body>
+<body class="sim">
+<nav class="navbar fixed-top navbar-light" id="cta">
+    <div class="container">
+  <a class="text2 navbar-brand" href="#"><i class="fa fa-users aria-hidden="true"></i>  Social Kids</a>
+         <ul class="nav navbar-nav navbar-right">
+             <li><h2 class="text4">For the child who communicates</h2></li>
+         </ul>
+
+    </div>
+</nav>
 <h1 class="text" align="center">Post an image</h1>
 <div align="center">
     <form method="POST" action="" enctype="multipart/form-data">
@@ -41,7 +75,11 @@
         <input type="submit" class="btn btn-danger" value="Post">
     </form>
     <br>
-    <br>
+    <form method="post" action="/feed/">
+        {% csrf_token %}
+        <input type="submit" class="btn-info btn" value="Check Feed">
+    </form>
+
     {% load static %} <img src="{% static "myapp/global-kids.png" %}" id="me" alt="Image!" class="phone"/>
 </div>
 </body>
