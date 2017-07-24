@@ -82,6 +82,11 @@
         margin:0 4px 4px 0;
         background:cover;
         }
+        .btnfeed{
+        margin-top:40px;
+        height:30%;
+        }
+
 
 
 
@@ -91,8 +96,19 @@
    <nav class="navbar fixed-top navbar-light" id="cta">
     <div class="container">
   <a class="text2 navbar-brand" href="#"><i class="fa fa-users aria-hidden="true"></i>  Social Kids</a>
-         <ul class="nav navbar-nav navbar-right">
+        <ul class="nav navbar-nav navbar-left">
+            <form method="post" action="/post/" href="post.html">
+        {% csrf_token %}
+                <button type="submit" class="btnfeed btn-warning btn">Create Post <i class="fa fa-puzzle-piece" aria-hidden="true"></i></button>
+    </form>
+         </ul>
+        <ul class="nav navbar-nav navbar-right">
              <li><h2 class="text4">For the child who communicates</h2></li>
+            <li><h3 class="text4">{{ username }}</h3></li><li>
+            &nbsp; &nbsp;</li>
+            <li><form method="get" action="/logout/">{% csrf_token %}
+                <button style type="submit" class="btnfeed btn-warning btn">Logout <i class="fa fa-sign-out" aria-hidden="true"></i></button>
+            </form></li>
          </ul>
 
     </div>

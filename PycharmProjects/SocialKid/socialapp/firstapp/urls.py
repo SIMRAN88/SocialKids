@@ -17,7 +17,7 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from myapp.views import post_view
-from myapp.views import login_view, feed_view, signup_view, like_view, comment_view
+from myapp.views import login_view, feed_view, signup_view, like_view, comment_view, logout_view
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),

@@ -46,10 +46,6 @@
          .sim{
         background-color:#e2cee2;
         }
-         .btnfeed{
-        margin-top:40px;
-        height:30%;
-        }
          #me {
             -webkit-animation: rotation 15s infinite linear;
         }
@@ -66,23 +62,15 @@
   <a class="text2 navbar-brand" href="#"><i class="fa fa-users aria-hidden="true"></i>  Social Kids</a>
          <ul class="nav navbar-nav navbar-right">
              <li><h2 class="text4">For the child who communicates</h2></li>
-             <li></h3>{{ userprint }}</h3></li>
-             <li>&nbsp;&nbsp;</li>
-             <li></li>
-             <li><form method="get" action="/logout/">{% csrf_token %}
-                <button style type="submit" class="btnfeed btn-warning btn">Logout <i class="fa fa-sign-out" aria-hidden="true"></i></button>
-            </form></li>
          </ul>
 
     </div>
 </nav>
 <h1 class="text" align="center">Post an image</h1>
 <div align="center">
-    <form method="POST" action="" enctype="multipart/form-data">
+    <form>
         {% csrf_token %}
-
-        {{ form.as_p }}
-        <input type="submit" class="btn btn-danger" value="Post">
+        <a href="post.html"><input type="submit" class="btn btn-danger" value="Post"></a>
     </form>
     <br>
     <form method="post" action="/feed/">

@@ -32,8 +32,8 @@
 </script>
     <style>
         .phone{
-        height:105%;
-        width:105%;
+        height:85%;
+        width:85%;
         margin-top:30px;
         }
         .text{
@@ -102,13 +102,11 @@
             <div class ="col-md-4">
 
             {% load static %} <img src="{% static "myapp/global-kids.png" %}" id="me" alt="Image!" class="phone"/>
-                <br>
                 <h3 class="text1">SocialKids © 2017 </h3>
             </div>
             <div class="col-md-1">
             </div>
             <div class ="col-md-4">
-             <br>
                 <form class="form-horizontal" method="POST">
                     <h4 style='color: white' id='error-text'>{{ context }}</h4>
                 {% csrf_token %}

@@ -22,6 +22,10 @@ class SignUpForm(forms.ModelForm):
             raise forms.ValidationError('Password must be greater than 5 characters')
         return password
 
+    def delete(self):
+        self.party.delete()
+        self.delete()
+
 class LoginForm(forms.ModelForm):
     class Meta:
         model = User

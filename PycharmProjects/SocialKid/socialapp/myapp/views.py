@@ -6,16 +6,23 @@ from datetime import timedelta
 from django.utils import timezone
 import os
 
+from clarifai import *
+from clarifai.rest import ClarifaiApp
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 from imgurpython import ImgurClient
 
 # for sending mail to user
-import sendgrid
-import os
 from sendgrid.helpers.mail import *
+import sendgrid
+sendgrid_key = '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'
 
-API_KEY = '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'
+# Set up clarifai and define a model
+app = ClarifaiApp(api_key='e9aa8985bec24eea80bc92cf07e72880')
+model = app.models.get('general-v1.3')
 
+from paralleldots import set_api_key, sentiment
+PKEY = 'RSElfqhPZOqwmkYdqIq4SpRSMBHYDMeH7nzc0edlBz8'
 
 # Create your views here.
 def signup_view(request):
@@ -26,23 +33,16 @@ def signup_view(request):
             name = form.cleaned_data['name']
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
-            user_len = len(username)
-            password_len = len(password)
-            if user_len > 2 and password_len > 5:
-                print "User name should be at least three characters long and password length more than 5"
             # saving data to DB
             user = User(name=name, password=make_password(password), email=email, username=username)
             user.save()
-            sg = sendgrid.SendGridAPIClient(apikey=os.environ.get(API_KEY))
+            sg = sendgrid.SendGridAPIClient(apikey=sendgrid_key)
             from_email = Email("socialkids2017@gmail.com")
-            to_email = Email(user.email)
-            subject = "Welcome to social kids"
-            content = Content("text/plain", "You have successfully signed up.Explore the social network")
+            to_email = Email(email)
+            subject = "Social Kids"
+            content = Content("text/plain", "you are successfully signed up!! Welcome on board")
             mail = Mail(from_email, subject, to_email, content)
             response = sg.client.mail.send.post(request_body=mail.get())
-            print(response.status_code)
-            print(response.body)
-            print(response.headers)
 
             return render(request, 'success.html')
 
@@ -81,7 +81,9 @@ def login_view(request):
         form = LoginForm()
 
     dict['form'] = form
-    return render(request, 'login.html', dict)
+    return render(request, 'login.html', dict, {'userprint': username})
+    return render(request, 'post.html',  {'userprint': username})
+    return render(request, 'feed.html',  {'userprint': username})
 
 
 def post_view(request):
@@ -100,8 +102,26 @@ def post_view(request):
 
                 client = ImgurClient('0e144dffb567600', '17ed6b09b6b16a35f32bfcd307e1b21cb132b21e')
                 post.image_url = client.upload_from_path(path, anon=True)['link']
-                post.save()
-                return redirect('/feed/')
+
+                # using calrifai
+                response_image = model.predict_by_url(url=post.image_url)
+                right = response_image['outputs'][0]['data']['concepts'][0]['value']
+
+                # using paralleldots
+                set_api_key(PKEY)
+                response = sentiment(str(caption))
+                sentiment_score = response["sentiment"]
+                if sentiment_score >= 0.6 and right > 0.5:
+                    post.save()
+                    saved_message = 'Post can be submitted'
+                    return render(request, 'error.html', {'context': saved_message})
+                else:
+                    error_message = 'Post cannot be submitted'
+                    post.delete()
+                    return render(request, 'error.html', {'context': error_message})
+
+            return redirect('/post/')
+
         else:
             form = PostForm()
         return render(request, 'post.html', {'form': form})
@@ -156,6 +176,14 @@ def comment_view(request):
     else:
         return redirect('/login')
 
+# View to log the user out
+def logout_view(request):
+    if request.method == 'GET':
+        if request.COOKIES.get('session_token'):
+            SessionToken.objects.filter(session_token=request.COOKIES.get('session_token')).delete()
+        return redirect('/login/')
+    else:
+        return redirect('/feed/')
 
 # For validating the session
 def check_validation(request):
