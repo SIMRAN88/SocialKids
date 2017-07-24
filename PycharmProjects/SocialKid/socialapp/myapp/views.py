@@ -81,9 +81,8 @@ def login_view(request):
         form = LoginForm()
 
     dict['form'] = form
-    return render(request, 'login.html', dict, {'userprint': username})
-    return render(request, 'post.html',  {'userprint': username})
-    return render(request, 'feed.html',  {'userprint': username})
+    return render(request, 'login.html', dict)
+
 
 
 def post_view(request):
@@ -169,8 +168,20 @@ def comment_view(request):
             post_id = form.cleaned_data.get('post').id
             comment_text = form.cleaned_data.get('comment_text')
             comment = CommentModel.objects.create(user=user, post_id=post_id, comment_text=comment_text)
-            comment.save()
+            set_api_key(PKEY)
+            response = sentiment(str(comment_text))
+            sentiment_score = response["sentiment"]
+            if sentiment_score >= 0.6:
+                comment.save()
+                saved_message = 'Comment can be submitted.Check feed for more.'
+                return render(request, 'feed.html', {'error_comment': saved_message})
+            else:
+                error_message = 'Comment cannot be submitted.Be safe.Bad content is restricted.Continue.'
+                comment.delete()
+                return render(request, 'feed.html', {'error_comment': error_message})
+
             return redirect('/feed/')
+
         else:
             return redirect('/feed/')
     else:
