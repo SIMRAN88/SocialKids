@@ -26,5 +26,6 @@ urlpatterns = [
     url('like/', like_view),
     url('comment/', comment_view),
     url('login/', login_view),
+    url('logout/', logout_view),
     url('', signup_view)
 ]
