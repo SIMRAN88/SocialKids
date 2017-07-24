@@ -1,18 +1,18 @@
 import os
 from datetime import timedelta
+
 from clarifai.rest import ClarifaiApp
 from django.contrib.auth.hashers import make_password, check_password
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 from django.utils import timezone
 
-from forms import SignUpForm, LoginForm, PostForm, LikeForm, CommentForm
-from models import User, SessionToken, PostModel, LikeModel, CommentModel
+from forms import SignUpForm, LoginForm, PostForm, LikeForm, CommentForm, UpVoteForm
+from models import User, SessionToken, PostModel, LikeModel, CommentModel, UpVoteModel
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 from imgurpython import ImgurClient
 
-import smtplib
 # for sending mail to user
 #sendgrid_key = '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'
 
@@ -193,6 +193,26 @@ def comment_view(request):
             return redirect('/feed/')
     else:
         return redirect('/login')
+
+
+def up_vote_view(request):
+    user = check_validation(request)
+    if user and request.method == 'POST':
+        form = UpVoteForm(request.POST)
+        if form.is_valid():
+            comment_id = form.cleaned_data.get('comment').id
+            print comment_id
+            existing_up_vote = UpVoteModel.objects.filter(comment_id=comment_id, user=user).first()
+
+            if existing_up_vote:
+                existing_up_vote.delete()
+            else:
+                UpVoteModel.objects.create(comment_id=comment_id, user=user)
+
+        return redirect('/feed/')
+    else:
+        return redirect('/login/')
+
 
 # View to log the user out
 def logout_view(request):
