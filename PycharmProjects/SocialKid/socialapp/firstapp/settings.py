@@ -81,6 +81,12 @@ DATABASES = {
     }
 }
 
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = 'socialkids2017'
+EMAIL_HOST_PASSWORD = 'acadviewproject2017'
+DEFAULT_FROM_EMAIL = 'webmaster@localhost'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators

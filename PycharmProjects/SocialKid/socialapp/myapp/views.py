@@ -1,21 +1,20 @@
+import os
+from datetime import timedelta
+from clarifai.rest import ClarifaiApp
 from django.contrib.auth.hashers import make_password, check_password
+from django.core.mail import send_mail
 from django.shortcuts import render, redirect
+from django.utils import timezone
+
 from forms import SignUpForm, LoginForm, PostForm, LikeForm, CommentForm
 from models import User, SessionToken, PostModel, LikeModel, CommentModel
-from datetime import timedelta
-from django.utils import timezone
-import os
-
-from clarifai import *
-from clarifai.rest import ClarifaiApp
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 from imgurpython import ImgurClient
 
+import smtplib
 # for sending mail to user
-from sendgrid.helpers.mail import *
-import sendgrid
-sendgrid_key = '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'
+#sendgrid_key = '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'
 
 # Set up clarifai and define a model
 app = ClarifaiApp(api_key='e9aa8985bec24eea80bc92cf07e72880')
@@ -36,13 +35,9 @@ def signup_view(request):
             # saving data to DB
             user = User(name=name, password=make_password(password), email=email, username=username)
             user.save()
-            sg = sendgrid.SendGridAPIClient(apikey=sendgrid_key)
-            from_email = Email("socialkids2017@gmail.com")
-            to_email = Email(email)
-            subject = "Social Kids"
-            content = Content("text/plain", "you are successfully signed up!! Welcome on board")
-            mail = Mail(from_email, subject, to_email, content)
-            response = sg.client.mail.send.post(request_body=mail.get())
+
+            send_mail('Subject here', 'Here is the message.', 'socialkids2017@gmail.com', [email],
+                      fail_silently=False)
 
             return render(request, 'success.html')
 
@@ -54,35 +49,30 @@ def signup_view(request):
 
 
 def login_view(request):
-    dict = {}
+    response_data = {}
     if request.method == "POST":
         form = LoginForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
-            # SQL QUERY
             user = User.objects.filter(username=username).first()
+
             if user:
-                # Check for the password
-                if not check_password(password, user.password):
-                    print 'incorrect password'
-                    dict['message'] = 'Incorrect Password! Please try again!'
-                else:
-                    print 'Valid'
+                if check_password(password, user.password):
                     token = SessionToken(user=user)
                     token.create_token()
                     token.save()
-                    response = redirect('/post/')
+                    response = redirect('/feed/')
                     response.set_cookie(key='session_token', value=token.session_token)
                     return response
-            else:
-                print 'User does not exist'
-    else:
+                else:
+                    response_data['message'] = 'Incorrect Password! Please try again!'
+
+    elif request.method == 'GET':
         form = LoginForm()
 
-    dict['form'] = form
-    return render(request, 'login.html', dict)
-
+    response_data['form'] = form
+    return render(request, 'login.html', response_data)
 
 
 def post_view(request):
@@ -150,11 +140,18 @@ def like_view(request):
         if form.is_valid():
             post_id = form.cleaned_data.get('post').id
             existing_like = LikeModel.objects.filter(post_id=post_id, user=user).first()
-            if not existing_like:
-                LikeModel.objects.create(post_id=post_id, user=user)
-            else:
+            if existing_like:
                 existing_like.delete()
+            else:
+                post = LikeModel.objects.create(post_id=post_id, user=user)
 
+                send_mail(
+                    'Your post was liked by : ' + post.user.name ,
+                    'Check your feed at SocialKids',
+                    'socialkids2017@gmail.com',
+                    [post.post.user.email],
+                    fail_silently=False,
+                )
             return redirect('/feed/')
     else:
         return redirect('/login/')
@@ -172,9 +169,19 @@ def comment_view(request):
             response = sentiment(str(comment_text))
             sentiment_score = response["sentiment"]
             if sentiment_score >= 0.6:
+                comment = CommentModel.objects.create(user=user, post_id=post_id, comment_text=comment_text)
                 comment.save()
-                saved_message = 'Comment can be submitted.Check feed for more.'
+
+                send_mail(
+                    'You got a comment on your post by' + comment.user.name,
+                    'Check your feed at SocialKids',
+                    'socialkids2017@gmail.com',
+                    [comment.post.user.email],
+                    fail_silently=False,
+                )
+                saved_message = 'Comment is successfully submitted.Check feed for more.'
                 return render(request, 'feed.html', {'error_comment': saved_message})
+
             else:
                 error_message = 'Comment cannot be submitted.Be safe.Bad content is restricted.Continue.'
                 comment.delete()
