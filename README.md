@@ -85,7 +85,8 @@ pip install DateTime
 pyhton manage.py runserver
 
 localhost:8000 - Signup
-<p align="center">
-  <img width="460" height="300" src"http://i.imgur.com/3U3j10q.jpg">
-</p>
+![alt tag](http://i.imgur.com/3U3j10q.jpg)
+
+localhost:8000/login/ - Login
+![alt tag](http://i.imgur.com/WYljeCk.jpg)
 
