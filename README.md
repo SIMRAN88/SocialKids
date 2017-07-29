@@ -90,3 +90,16 @@ localhost:8000 - Signup
 localhost:8000/login/ - Login
 ![alt tag](http://i.imgur.com/WYljeCk.jpg)
 
+localhost:8000/post/ - Post
+![alt tag](http://i.imgur.com/cc1Vd9Q.jpg)
+
+localhost:8000/post/ - PostSuccessful(Analysis proper content[image and caption] for children)
+![alt tag](http://i.imgur.com/1vfEdoa.jpg)
+
+localhost:8000/feed/ - Feed
+![alt tag](http://i.imgur.com/u3Jc4r2.jpg)
+
+localhost:8000/feed/ - Comment(Analysis for the comment)
+![alt tag](http://i.imgur.com/cda7dEQ.jpg)
+
+
