@@ -60,7 +60,7 @@ pip install DateTime
 ```
 
 ### Run 
-```pyhton manage.py runserver
+pyhton manage.py runserver
 
 localhost:8000 - Signup
 ![alt tag](http://i.imgur.com/3U3j10q.jpg)
