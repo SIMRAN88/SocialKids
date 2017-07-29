@@ -1,3 +1,4 @@
+{% load cloudinary %}
 {% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
@@ -34,6 +35,12 @@
         margin-top:40px;
         height:30%;
         color:white;
+        }
+        .text_error{
+        font-family:'Lobster',cursive;
+        margin-top:40px;
+        height:30%;
+        color:red;
         }
          .text2{
         font-family: 'Lobster', cursive;
@@ -99,11 +106,13 @@
             </div>
           </div>
             <input type="submit" class="btn btn-primary" value="Login" align="center">
+
         </form>
 
     <div>
         <h1 class="text" align="center">Be ready to post<a href="post/"></a></h1>
         <form action="login/" method="get">
+            <h1 class="text_error">{{ text }}</h1>
         </form>
     </div>
             <div class="col-md-2">

@@ -17,7 +17,7 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from myapp.views import post_view
-from myapp.views import login_view, feed_view, signup_view, like_view, comment_view, logout_view, up_vote_view
+from myapp.views import login_view, feed_view, signup_view, like_view, comment_view, logout_view, up_vote_view , profile_view
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -28,5 +28,6 @@ urlpatterns = [
     url('upvote/', up_vote_view),
     url('login/', login_view),
     url('logout/', logout_view),
-    url('', signup_view)
+    url('', signup_view),
+    url(r'^feed/(?P<username>\w+)/$/', profile_view),
 ]

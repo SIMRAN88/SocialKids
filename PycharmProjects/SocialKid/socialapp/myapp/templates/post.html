@@ -1,3 +1,5 @@
+{% load cloudinary %}
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -60,13 +62,14 @@
         }
     </style>
 </head>
+
 <body class="sim">
 <nav class="navbar fixed-top navbar-light" id="cta">
     <div class="container">
   <a class="text2 navbar-brand" href="#"><i class="fa fa-users aria-hidden="true"></i>  Social Kids</a>
          <ul class="nav navbar-nav navbar-right">
              <li><h2 class="text4">For the child who communicates</h2></li>
-             <li></li>
+             <li><h2 class ="text4">{{ name }}</h2></li>
              <li>&nbsp;&nbsp;</li>
              <li></li>
              <li><form method="get" action="/logout/">{% csrf_token %}

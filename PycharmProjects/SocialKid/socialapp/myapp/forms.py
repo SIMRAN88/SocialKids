@@ -1,6 +1,6 @@
 from django.core.exceptions import ValidationError
 from django import forms
-from models import User, PostModel, LikeModel, CommentModel, UpVoteModel
+from models import User, PostModel, LikeModel, CommentModel, UpVoteModel , UserProfile
 
 
 class SignUpForm(forms.ModelForm):
@@ -49,7 +49,14 @@ class CommentForm(forms.ModelForm):
         model = CommentModel
         fields = ['comment_text', 'post']
 
+
 class UpVoteForm(forms.ModelForm):
     class Meta:
         model = UpVoteModel
         fields = ['comment']
+
+
+class UserProfile(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['user', 'post']

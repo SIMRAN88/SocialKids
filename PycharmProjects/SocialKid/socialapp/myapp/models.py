@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 from django.db import models
 import uuid
+import urllib3
 
 
 # Create your models here.
@@ -27,7 +28,7 @@ class SessionToken(models.Model):
 class PostModel(models.Model):
     user = models.ForeignKey(User)
     image = models.FileField(upload_to='user_images')
-    image_url = models.CharField(max_length=255)
+    image_url = models.CharField(max_length=25)
     caption = models.CharField(max_length=240)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
@@ -65,5 +66,12 @@ class CommentModel(models.Model):
 class UpVoteModel(models.Model):
     user = models.ForeignKey(User)
     comment = models.ForeignKey(CommentModel)
+    created_on = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now=True)
+
+
+class UserProfile(models.Model):
+    user = models.ForeignKey(User)
+    post = models.ForeignKey(PostModel)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)

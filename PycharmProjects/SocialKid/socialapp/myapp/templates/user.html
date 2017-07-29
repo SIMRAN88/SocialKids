@@ -1,0 +1,163 @@
+{% load cloudinary %}
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Feed</title>
+    {% load static %} <link rel="shortcut icon" href="{% static "myapp/socialkid.png" %}" type="image/x-icon">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Shrikhand" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Chewy" rel="stylesheet">
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <script src="https://use.fontawesome.com/baacfa72b9.js"></script>
+    <style>
+
+        .text{
+        color:#f4427a;
+        font-family: 'Shrikhand', cursive;
+        font-size:17px;
+        }
+        .text2{
+        font-family: 'Lobster', cursive;
+        color:white;
+        font-size:45px;
+        margin-top:10px;
+        height:30%;
+        }
+        .text11{
+        font-family: 'Lobster', cursive;
+        color:#573f7a;
+        font-size:45px;
+        margin-top:10px;
+        height:30%;
+        }
+        .text22{
+        font-family: 'Lobster', cursive;
+        color:#573f7a;
+        }
+
+        .text3{
+        font-family:'Chewy' ,cursive;
+        color:#282b16;
+        }
+       #cta{
+        background-color:#bc32b3;
+        margin:1px 0 0 0;
+
+        }
+        .text4{
+        font-family:'Lobster',cursive;
+        margin-top:40px;
+        height:30%;
+        color:white;
+        }
+
+
+        .new{
+        border:solid 1px #dae2ef;
+        margin:9px 500px 70px 500px;
+        border:solid 2px white;
+        background-color:white;
+        }
+        .text1{
+        font-family: 'Lobster', cursive;
+        color:#bc32b3;
+        font-size:30px;
+        }
+        .shift{
+        margin-top:4px;
+        }
+
+         .sim{
+        background-color:#e2cee2;
+        }
+        .text5{
+        font-family:'Lobster','cursive;
+        color:#436ea5;
+        }
+        .text7{
+        font-family:'Lobster','cursive;
+        color:#ebf442;
+        }
+        post{
+        margin:0 4px 4px 0;
+        background:cover;
+        }
+        .btnfeed{
+        margin-top:40px;
+        height:30%;
+        }
+
+
+
+
+    </style>
+</head>
+<body class="sim">
+    <nav class="navbar fixed-top navbar-light" id="cta">
+     <div class="container">
+       <a class="text2 navbar-brand" href="#"><i class="fa fa-users aria-hidden="true"></i>  Social Kids</a>
+         <ul class="nav navbar-nav navbar-left">
+          <form method="post" action="/post/" href="post.html">
+           {% csrf_token %}
+           <button type="submit" class="btnfeed btn-warning btn">Create Post <i class="fa fa-puzzle-piece" aria-hidden="true"></i></button>
+          </form>
+         </ul>
+         <ul class="nav navbar-nav navbar-right">
+             <li><h2 class="text4">For the child who communicates</h2></li>
+             <li><h3 class="text4">{{ print }}</h3></li>
+             <li>&nbsp; &nbsp;</li>
+             <li>&nbsp;&nbsp;</li>
+             <li>
+                 <form method="get" action="/feed/">{% csrf_token %}
+                    <button style type="submit" class="btnfeed btn-warning btn" action="/feed/">Feed</button>
+                 </form>
+             </li>
+             <li>&nbsp;&nbsp;</li>
+             <li>
+                 <form method="get" action="/logout/">{% csrf_token %}
+                <button style type="submit" class="btnfeed btn-warning btn">Logout <i class="fa fa-sign-out" aria-hidden="true"></i></button>
+                 </form>
+             </li>
+         </ul>
+     </div>
+    </nav>
+
+
+
+    <div class="sim" align="center">
+
+        {% for post in user.posts %}
+        <div class="new">
+            <br>
+            <h3 class="text11"> {{ post.user.username }} </h3>
+            <p class="text">[{{ post.created_on }}]</p>
+            <img class="post" style="display:inline-block; width:496px; height:344px;"
+             src="{{ post.image_url }}" />
+            <br>
+            <span class="text post" style="display:inline-block;" >{{ post.caption }}</span><br/><br/>
+                <div  align="left">
+                {{ post.like_count }} likes this
+                </div>
+
+            <div class="comment" align="left">
+            {% for comment in post.comments %}
+            <p> <div class="text22">
+              {{ comment.user.username }}: <span class="text"> {{ comment.comment_text }}</span>
+
+          </div>
+            <span class="text3">[{{ comment.created_on }}]</span>
+            </div>
+
+            {% endfor %}
+        </div>
+
+    </div>
+    {% endfor %}
+</div>
+</body>
+</html>

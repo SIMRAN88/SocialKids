@@ -1,3 +1,4 @@
+{% load cloudinary %}
 {% load staticfiles %}
 
 <!DOCTYPE html>
@@ -97,61 +98,65 @@
     </style>
 </head>
 <body class="sim">
-   <nav class="navbar fixed-top navbar-light" id="cta">
-    <div class="container">
-  <a class="text2 navbar-brand" href="#"><i class="fa fa-users aria-hidden="true"></i>  Social Kids</a>
-        <ul class="nav navbar-nav navbar-left">
-            <form method="post" action="/post/" href="post.html">
-        {% csrf_token %}
-                <button type="submit" class="btnfeed btn-warning btn">Create Post <i class="fa fa-puzzle-piece" aria-hidden="true"></i></button>
-    </form>
+    <nav class="navbar fixed-top navbar-light" id="cta">
+     <div class="container">
+       <a class="text2 navbar-brand" href="#"><i class="fa fa-users aria-hidden="true"></i>  Social Kids</a>
+         <ul class="nav navbar-nav navbar-left">
+          <form method="post" action="/post/" href="post.html">
+           {% csrf_token %}
+           <button type="submit" class="btnfeed btn-warning btn">Create Post <i class="fa fa-puzzle-piece" aria-hidden="true"></i></button>
+          </form>
          </ul>
-        <ul class="nav navbar-nav navbar-right">
+         <ul class="nav navbar-nav navbar-right">
              <li><h2 class="text4">For the child who communicates</h2></li>
-            <li><h3 class="text4">{{ username }}</h3></li><li>
-            &nbsp; &nbsp;</li>
-            <li>&nbsp;&nbsp;</li>
-            <li><form method="get" action="/feed/">{% csrf_token %}
-                <button style type="submit" class="btnfeed btn-warning btn" action="/feed/">Feed</button>
-            </form></li>
-            <li>&nbsp;&nbsp;</li>
-            <li><form method="get" action="/logout/">{% csrf_token %}
+             <li><h3 class="text4">{{ username }}</h3></li>
+             <li>&nbsp; &nbsp;</li>
+             <li>&nbsp;&nbsp;</li>
+             <li>
+                 <form method="get" action="/feed/">{% csrf_token %}
+                    <button style type="submit" class="btnfeed btn-warning btn" action="/feed/">Feed</button>
+                 </form>
+             </li>
+             <li>&nbsp;&nbsp;</li>
+             <li>
+                 <form method="get" action="/logout/">{% csrf_token %}
                 <button style type="submit" class="btnfeed btn-warning btn">Logout <i class="fa fa-sign-out" aria-hidden="true"></i></button>
-            </form></li>
+                 </form>
+             </li>
          </ul>
-
-    </div>
-</nav>
-
-
-<div class="sim" align="center">
-     <h1 class="text1">{{ error_comment }}</h1>
+     </div>
+    </nav>
 
 
+    <div class="sim" align="center">
 
-    {% for post in posts %}
-    <div class="new">
+        {% for post in posts %}
+        <div class="new">
+            <br>
+            <h3 class="text11"> {{ post.user.username }} </h3>
+            <p class="text">[{{ post.created_on }}]</p>
+            <img class="post" style="display:inline-block; width:496px; height:344px;"
+             src="{{ post.image_url }}" />
+            <br>
+            <span class="text post" style="display:inline-block;" >{{ post.caption }}</span><br/><br/>
+                <div  align="left">
+                {{ post.like_count }} likes this
+                </div>
+                <div  align="left">
+                    <form method="POST" action="/like/">
+                    {% csrf_token %}
+                    <input type="hidden" name="post" value="{{ post.id }}" />
+                    {% if post.has_liked %}
+                    <button class="btn btn-danger shift">Unlike <i class="fa fa-thumbs-down aria-hidden="true"></i></button>
+                    {% else %}
+                    <button class="btn btn-primary shift">Like <i class="fa fa-heart" aria-hidden="true"></i></button>
+                    {% endif %}
+                    </form>
+                </div>
 
-    <br>
-        <h3 class="text11"> {{ post.user.username }} </h3>
-        <p class="text">[{{ post.created_on }}]</p>
-        <img class="post" style="display:inline-block; width:496px; height:344px;"
-             src="{{ post.image_url }}" /><br>
-        <span class="text post" style="display:inline-block;" >{{ post.caption }}</span><br/><br/>
-        <div  align="left">
-            {{ post.like_count }} likes this
-        </div>
-        <div  align="left">
-            <form method="POST" action="/like/">
-              {% csrf_token %}
-              <input type="hidden" name="post" value="{{ post.id }}" />
-                {% if post.has_liked %}
-                <button class="btn btn-primary shift">Unlike <i class="fa fa-thumbs-down aria-hidden="true"></i></button>
-                {% else %}
-                <button class="btn btn-primary shift">Like <i class="fa fa-heart" aria-hidden="true"></i></button>
-                {% endif %}
-            </form>
-            <span>
+
+
+                    <span align="left">
             <form method="POST" action="/comment/">
                 {% csrf_token %}
                 <input type="hidden" name="post" value="{{ post.id }}" class="text"/>
@@ -160,7 +165,8 @@
                 <button class="btn btn-primary">Comment</button>
             </form>
             </span>
-        </div>
+
+
 
         <div class="comment" align="left">
             {% for comment in post.comments %}
@@ -187,7 +193,7 @@
 
             {% endfor %}
         </div>
-            
+
     </div>
     {% endfor %}
 </div>
