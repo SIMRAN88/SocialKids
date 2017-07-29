@@ -47,6 +47,7 @@ timestamp and comment text of the comment.
 
 To properly use this python-modules some additional libraries have to be
 installed beforehand. This can be easily accomplished with the commands below.
+``````````````````````````````````````````````````
 
 ```bash
 pip install virtual_env
